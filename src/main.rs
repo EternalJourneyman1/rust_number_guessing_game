@@ -10,10 +10,10 @@ fn main() {
 
     let target_number = generate_number_between(1, 10);
 
-    while user_turns <= 10 && game_won != true {
+    while user_turns <= 10 && !game_won {
         if user_turns == 1 {
             println!("Please Enter a number between 1 and 10");
-        } else if user_turns != 1 && game_won == false {
+        } else if user_turns != 1 && !game_won {
             println!("That was incorrect.Please try again!")
         }
 
@@ -23,6 +23,9 @@ fn main() {
             game_won = true;
             break;
         }
+
+        check_user_guess(&mut user_guess, target_number);
+
         // At the end of each cycle reset user_guess as readline appends to existing var
         reset_user_guess(&mut user_guess);
 
@@ -38,8 +41,16 @@ fn main() {
     }
 }
 
-fn get_user_guess(mut user_guess: &mut String) -> usize {
-    stdin().read_line(&mut user_guess).expect("Failed to read user input")
+fn check_user_guess(user_guess: &mut str, target_number: i32) {
+    if user_guess.trim().parse::<i32>().unwrap() < target_number {
+        println!("Too Low!")
+    } else if user_guess.trim().parse::<i32>().unwrap() > target_number {
+        println!("Too High!")
+    }
+}
+
+fn get_user_guess(user_guess: &mut String) -> usize {
+    stdin().read_line( user_guess).expect("Failed to read user input")
 }
 
 
